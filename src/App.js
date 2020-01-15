@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import './App.css';
+import stilisimo from './App.module.css';
 import Person from './Person/Person';
+
+// import classes from '*.module.css';
 // import UserOutput from './UserOutput/UserOutput';
 // import UserInput from './UserInput/UserInput';
 
@@ -25,21 +27,31 @@ class App extends Component {
 
   state = {
     persons: [
-      { name: "Marija", age: 30 },
-      { name: "Jovan", age: 30 },
-      { name: "Jordanka", age: 60 },
+      { id: "1", name: "Marija", age: 30 },
+      { id: "2", name: "Jovan", age: 30 },
+      { id: "3", name: "Jordanka", age: 60 },
     ],
     showPersons: false
   };
-  changeNameHandler = (event) => {
-    this.setState({
-      persons: [
-        { name: "Kuzmanoska", age: 31 },
-        { name: event.target.value, age: 30 },
-        { name: "Jordanka", age: 64 },
-      ]
-    })
-  };
+  changeNameHandler = (event, id) => {
+    const personIndex = this.state.persons.findIndex(p => {
+      return p.id === id;
+    });
+    const person = {
+      ...this.state.persons[personIndex]
+    };
+    // const person = Object.assign({},this.state.persons[personIndex])
+    person.name = event.target.value;
+    const persons = [...this.state.persons]
+    persons[personIndex] = person
+    this.setState({ persons: persons });
+
+  }
+  deletePersonsHandler = (personsIndex) => {
+    const persons = [...this.state.persons]
+    persons.splice(personsIndex, 1)
+    this.setState({ persons: persons })
+  }
   switchNameHandler = (newName) => {
     this.setState({
       persons: [
@@ -49,7 +61,6 @@ class App extends Component {
       ]
     })
   };
-
   // state = {
   //   username: 'Marija'
   // }
@@ -64,37 +75,46 @@ class App extends Component {
   //   })
   // }
   render() {
-
-    const style = {
-      backgroundColor: "yellow",
-      font: 'bold',
-      padding: '5px',
-      border: '1px solid orange',
-      cursor: 'pointer'
-    }
-
+   
     let persons = null
+    let btnStyle= '';
     if (this.state.showPersons) {
       persons = (
         <div>
-          {this.state.persons.map(person => {
-           return <Person name={person.name}
+          {this.state.persons.map((person, index) => {
+            return <Person
+              click={() => this.deletePersonsHandler(index)}
+              name={person.name}
               age={person.age}
+              key={person.id}
               // click={this.switchNameHandler.bind(this, 'neshto2')}
-              change={this.changeNameHandler}
+              change={(event) => this.changeNameHandler(event, person.id)}
             />
           })}
-      </div>
-    )}
+        </div>
+      )
+      btnStyle=stilisimo.Red
+    }
+
+    const classes = [];
+    if (this.state.persons.length <= 2) {
+      classes.push(stilisimo.red)
+    }
+    if (this.state.persons.length <= 1) {
+      classes.push(stilisimo.bold)
+    }
 
     return (
-      <div className="App" >
+
+      <div className={stilisimo.App} >
         <h1> I'm sexy and I know it!!!</h1>
+        <p className={classes.join(' ')}>This is working</p>
         <button
-          style={style}
+          className={btnStyle}
           onClick={this.togglePersonsHandler}>Swith names</button>
         {persons}
       </div>
+
     );
   }
 }

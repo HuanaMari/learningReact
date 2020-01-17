@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import stilisimo from './App.module.css';
-import Person from './Person/Person';
+import Person from '../components/Persons/Person/Person';
 
 // import classes from '*.module.css';
 // import UserOutput from './UserOutput/UserOutput';

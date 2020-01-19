@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import stilisimo from './App.module.css';
-import Person from '../components/Persons/Person/Person';
-
+import Persons from '../components/Persons/Persons';
+import Cockpit from '../components/Cockpit/Cockpit'
 // import classes from '*.module.css';
 // import UserOutput from './UserOutput/UserOutput';
 // import UserInput from './UserInput/UserInput';
@@ -75,45 +75,38 @@ class App extends Component {
   //   })
   // }
   render() {
-   
+
     let persons = null
-    let btnStyle= '';
     if (this.state.showPersons) {
       persons = (
         <div>
-          {this.state.persons.map((person, index) => {
-            return <Person
-              click={() => this.deletePersonsHandler(index)}
-              name={person.name}
-              age={person.age}
-              key={person.id}
-              // click={this.switchNameHandler.bind(this, 'neshto2')}
-              change={(event) => this.changeNameHandler(event, person.id)}
-            />
-          })}
+          <Persons persons={this.state.persons}
+            clicked={this.deletePersonsHandler}
+            changed={this.changeNameHandler}
+          />
         </div>
       )
-      btnStyle=stilisimo.Red
+
     }
 
-    const classes = [];
-    if (this.state.persons.length <= 2) {
-      classes.push(stilisimo.red)
-    }
-    if (this.state.persons.length <= 1) {
-      classes.push(stilisimo.bold)
-    }
+
+    // if (this.state.persons.length <= 2) {
+    //   classes.push(stilisimo.red)
+    // }
+    // if (this.state.persons.length <= 1) {
+    //   classes.push(stilisimo.bold)
+    // }
 
     return (
-
-      <div className={stilisimo.App} >
-        <h1> I'm sexy and I know it!!!</h1>
-        <p className={classes.join(' ')}>This is working</p>
-        <button
-          className={btnStyle}
-          onClick={this.togglePersonsHandler}>Swith names</button>
+      <div className={stilisimo.App}>
+        <Cockpit
+          persons={this.state.persons}
+          showPersons={this.state.showPersons}
+          clicked={this.togglePersonsHandler}
+        />
         {persons}
       </div>
+
 
     );
   }

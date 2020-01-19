@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import stilisimo from './App.module.css';
 import Persons from '../components/Persons/Persons';
-import Cockpit from '../components/Cockpit/Cockpit'
+import Cockpit from '../components/Cockpit/Cockpit';
+import withClass from '../hoc/withClass';
 // import classes from '*.module.css';
 // import UserOutput from './UserOutput/UserOutput';
 // import UserInput from './UserInput/UserInput';
@@ -86,29 +87,18 @@ class App extends Component {
           />
         </div>
       )
-
     }
-
-
-    // if (this.state.persons.length <= 2) {
-    //   classes.push(stilisimo.red)
-    // }
-    // if (this.state.persons.length <= 1) {
-    //   classes.push(stilisimo.bold)
-    // }
-
     return (
       <div className={stilisimo.App}>
         <Cockpit
+        title={this.props.appTitle}
           persons={this.state.persons}
           showPersons={this.state.showPersons}
           clicked={this.togglePersonsHandler}
         />
         {persons}
       </div>
-
-
     );
   }
 }
-export default App;
+export default withClass(App,stilisimo.App);
